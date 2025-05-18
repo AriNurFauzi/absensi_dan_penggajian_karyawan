@@ -1,0 +1,57 @@
+.absen {
+    margin: 0;
+    padding: 0;
+    background-color: #ccb297;
+    font-family: 'Quicksand', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .logo1 {
+    width: 120px;
+    margin-bottom: 20px;
+  }
+  
+  .instruction {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 40px;
+  }
+  
+  .button-group1 {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+  }
+  
+  .button1 {
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+    width: 140px;
+    transition: transform 0.2s ease;
+  }
+  
+  .button1:hover {
+    transform: scale(1.05);
+  }
+  
+  .button1 img {
+    width: 40px;
+    margin-bottom: 10px;
+  }
+  
+  .masuk {
+    color: #00b894;
+    font-weight: 600;
+  }
+  
+  .pulang {
+    color: #d63031;
+    font-weight: 600;
+  }
+  
