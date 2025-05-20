@@ -27,7 +27,7 @@
   <tbody>
     <?php
       $no = 1;
-      $query = "SELECT * FROM karyawan";
+      $query = "SELECT * FROM pengguna";
       $tampil = $conn->query($query);
 
       if ($tampil->num_rows > 0) {

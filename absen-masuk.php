@@ -3,7 +3,7 @@ session_start();
 
 $nama_karyawan = "Ahmad Radin Intan Saputra"; 
 $karyawan_id = 1; 
-
+?>
 <div class="absen-page">
   <div class="absen-container">
     <p class="judul">Absen Masuk Karyawan</p>

@@ -19,7 +19,7 @@
         $password       = password_hash($data['password'], PASSWORD_DEFAULT);
     
         // Cek duplikasi username atau NIK
-        $cek = $conn->prepare("SELECT id_karyawan FROM karyawan WHERE username = ? OR nik = ?");
+        $cek = $conn->prepare("SELECT id_karyawan FROM pengguna WHERE username = ? OR nik = ?");
         $cek->bind_param("ss", $username, $nik);
         $cek->execute();
         $cek->store_result();
@@ -28,7 +28,7 @@
             return "Username atau NIK sudah terdaftar.";
         }
     
-        $stmt = $conn->prepare("INSERT INTO karyawan (username, nama_lengkap, jenis_kelamin, tanggal_lahir, nik, password, no_telp)
+        $stmt = $conn->prepare("INSERT INTO pengguna (username, nama_lengkap, jenis_kelamin, tanggal_lahir, nik, password, no_telp)
                                 VALUES (?, ?, ?, ?, ?, ?, ?)");
         $stmt->bind_param("sssssss", $username, $nama_lengkap, $jenis_kelamin, $tanggal_lahir, $nik, $password, $no_telp);
     
