@@ -72,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalHapusKaryawan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl  modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -137,6 +137,59 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
           <button type="submit" class="btn btn-primary">Tambah Data</button>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalHapusKaryawan" tabindex="-1" aria-labelledby="modalHapusLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header border-0">
+        <h5 class="modal-title text-danger fw-bold" id="modalHapusLabel">Hapus Data Karyawan</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+        <div class="d-flex align-items-center mb-3">
+          <div class="me-3">
+            <img src="https://via.placeholder.com/50" class="rounded-circle" alt="Foto Karyawan">
+          </div>
+          <div>
+            <h6 class="mb-0 fw-bold">Ahmad Radin Intan Saputra</h6>
+            <small class="text-muted">Karyawan Toko Roti Bakar Bahagia</small>
+          </div>
+        </div>
+
+        <div class="row mb-2">
+          <div class="col-6"><strong>NIK:</strong> 01010101010</div>
+          <div class="col-6"><strong>Tanggal Lahir:</strong> 010101</div>
+          <div class="col-6"><strong>Jenis Kelamin:</strong> Laki - Laki</div>
+          <div class="col-6"><strong>No Telp:</strong> 0808080808</div>
+        </div>
+
+        <div class="alert alert-danger mt-3">
+          <strong>Peringatan:</strong> Tindakan ini tidak dapat dibatalkan. Semua data yang terkait dengan karyawan ini akan dihapus secara permanen dari sistem.
+        </div>
+
+        <div class="mb-3">
+          <label for="alasanPenghapusan" class="form-label">Alasan penghapusan:</label>
+          <select class="form-select" id="alasanPenghapusan">
+            <option value="">Pilih alasan</option>
+            <option value="Mengundurkan diri">Mengundurkan diri</option>
+            <option value="Dikeluarkan">Dikeluarkan</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-danger" onclick="hapusData()">Hapus Data</button>
+      </div>
+
     </div>
   </div>
 </div>
