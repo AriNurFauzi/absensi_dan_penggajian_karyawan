@@ -1,219 +1,760 @@
-<div class="container py-4 mt-5  pt-5">
-        <div class="card mb-4">
-            <!-- Header -->
-            <div class="card-header bg-white">
-                <h4 class="mb-1">Riwayat Absensi</h4>
-                <p class="text-muted small mb-0">Lihat dan unduh riwayat kehadiran Anda</p>
-            </div>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Absensi Karyawan</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #eef2ff;
+            --secondary: #3f3d56;
+            --success: #2ec4b6;
+            --warning: #ff9f1c;
+            --danger: #e71d36;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-300: #dee2e6;
+            --gray-400: #ced4da;
+            --gray-500: #adb5bd;
+            --gray-600: #6c757d;
+            --gray-700: #495057;
+            --gray-800: #343a40;
+            --box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            --border-radius: 10px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fb;
+            color: var(--gray-800);
+            line-height: 1.5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo h1 {
+            font-size: 22px;
+            color: var(--secondary);
+            font-weight: 600;
+        }
+        
+        .logo img {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .period-select {
+            padding: 8px 12px;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            background-color: white;
+            color: var(--gray-700);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .avatar {
+            width: 32px;
+            height: 32px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .user-name {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-800);
+        }
+        
+        .page-header {
+            margin-bottom: 20px;
+        }
+        
+        .page-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .page-title i {
+            color: var(--primary);
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card .label {
+            font-size: 13px;
+            color: var(--gray-600);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .stat-card .value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gray-800);
+        }
+        
+        .stat-card i {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 20px;
+            opacity: 0.15;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-800);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .card-title i {
+            color: var(--primary);
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .search {
+            position: relative;
+        }
+        
+        .search input {
+            padding: 8px 12px 8px 32px;
+            border: 1px solid var(--gray-300);
+            border-radius: 6px;
+            font-size: 14px;
+            width: 200px;
+        }
+        
+        .search i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3752d0;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 20px;
+            text-align: left;
+        }
+        
+        th {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gray-600);
+            background-color: var(--gray-100);
+        }
+        
+        td {
+            font-size: 14px;
+            color: var(--gray-800);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        tbody tr:hover {
+            background-color: var(--gray-100);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .badge-success {
+            background-color: rgba(46, 196, 182, 0.15);
+            color: var(--success);
+        }
+        
+        .badge-warning {
+            background-color: rgba(255, 159, 28, 0.15);
+            color: var(--warning);
+        }
+        
+        .action-menu {
+            cursor: pointer;
+            color: var(--gray-600);
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .action-menu:hover {
+            background-color: var(--gray-200);
+            color: var(--gray-800);
+        }
+        
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-top: 1px solid var(--gray-200);
+            font-size: 13px;
+            color: var(--gray-600);
+        }
+        
+        .pagination {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .page-link {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            color: var(--gray-700);
+        }
+        
+        .page-link:hover {
+            background-color: var(--gray-200);
+        }
+        
+        .page-link.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+         .container1 {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            font-size: 24px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--label-color);
+        }
+        
+        select, input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+        
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .date-inputs {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .date-inputs .form-group {
+            flex: 1;
+        }
+        
+        .input-icon {
+            position: relative;
+        }
+        
+        .input-icon input {
+            padding-right: 40px;
+        }
+        
+        .input-icon i {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        
+        .file-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .file-input label {
+            display: inline-block;
+            margin-bottom: 0;
+        }
+        
+        .file-input-button {
+            background-color: #f3f4f6;
+            color: #4b5563;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .file-input-button:hover {
+            background-color: #e5e7eb;
+        }
+        
+        .file-name {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px;
+            }
             
-            <!-- Filter Section -->
-            <div class="card-body border-bottom">
-                <div class="row align-items-center">
-                    <div class="col-md-6 mb-3 mb-md-0">
-                        <div class="dropdown">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="monthDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-calendar3"></i> Mei 2025
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="monthDropdown">
-                                <li><a class="dropdown-item" href="#">Mei 2025</a></li>
-                                <li><a class="dropdown-item" href="#">April 2025</a></li>
-                                <li><a class="dropdown-item" href="#">Maret 2025</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="d-flex gap-2 justify-content-md-end">
-                            <div class="input-group">
-                                <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
-                                <input type="text" class="form-control" placeholder="Cari...">
-                            </div>
-                            <button class="btn btn-outline-secondary d-flex align-items-center" type="button">
-                                <i class="bi bi-funnel"></i>
-                            </button>
-                            <button class="btn btn-primary d-flex align-items-center" type="button">
-                                <i class="bi bi-download me-1"></i> Unduh
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            .date-inputs {
+                flex-direction: column;
+                gap: 20px;
+            }
             
-            <!-- Tabs -->
-            <div class="card-body pb-0">
-                <ul class="nav nav-tabs" id="attendanceTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="true">Semua</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="present-tab" data-bs-toggle="tab" data-bs-target="#present" type="button" role="tab" aria-controls="present" aria-selected="false">Hadir</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="late-tab" data-bs-toggle="tab" data-bs-target="#late" type="button" role="tab" aria-controls="late" aria-selected="false">Terlambat</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="leave-tab" data-bs-toggle="tab" data-bs-target="#leave" type="button" role="tab" aria-controls="leave" aria-selected="false">Izin/Cuti</button>
-                    </li>
-                </ul>
-            </div>
+            .actions {
+                flex-direction: column;
+            }
             
-            <!-- Tab Content -->
-            <div class="card-body">
-                <div class="tab-content" id="attendanceTabsContent">
-                    <div class="tab-pane fade show active" id="all" role="tabpanel" aria-labelledby="all-tab">
-                        <div class="table-responsive">
-                            <table class="table table-hover align-middle">
-                                <thead>
-                                    <tr>
-                                        <th>Tanggal</th>
-                                        <th>Jam Masuk</th>
-                                        <th>Jam Keluar</th>
-                                        <th>Status</th>
-                                        <th>Lokasi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div>01 Mei 2025</div>
-                                            <small class="text-muted">Kamis</small>
-                                        </td>
-                                        <td>10:00</td>
-                                        <td>22:05</td>
-                                        <td>
-                                            <span class="badge badge-hadir">
-                                                <i class="bi bi-check-circle-fill me-1"></i> Hadir
-                                            </span>
-                                        </td>
-                                        <td>Kantor</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div>30 April 2025</div>
-                                            <small class="text-muted">Rabu</small>
-                                        </td>
-                                        <td>10:00</td>
-                                        <td>22:00</td>
-                                        <td>
-                                            <span class="badge badge-hadir">
-                                                <i class="bi bi-check-circle-fill me-1"></i> Hadir
-                                            </span>
-                                        </td>
-                                        <td>Kantor</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div>29 April 2025</div>
-                                            <small class="text-muted">Selasa</small>
-                                        </td>
-                                        <td>10:00</td>
-                                        <td>22:00</td>
-                                        <td>
-                                            <span class="badge badge-terlambat">
-                                                <i class="bi bi-exclamation-triangle-fill me-1"></i> Terlambat
-                                            </span>
-                                        </td>
-                                        <td>Kantor</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div>28 April 2025</div>
-                                            <small class="text-muted">Senin</small>
-                                        </td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>
-                                            <span class="badge badge-izin">
-                                                <i class="bi bi-calendar-x-fill me-1"></i> Izin Sakit
-                                            </span>
-                                        </td>
-                                        <td>-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <div>26 April 2025</div>
-                                            <small class="text-muted">Sabtu</small>
-                                        </td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>
-                                            <span class="badge badge-libur">
-                                                <i class="bi bi-house-fill me-1"></i> Libur
-                                            </span>
-                                        </td>
-                                        <td>-</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <!-- Pagination -->
-                        <div class="d-flex justify-content-between align-items-center mt-3">
-                            <p class="text-muted small mb-0">
-                                Menampilkan <span class="fw-medium">1</span> sampai <span class="fw-medium">5</span> dari <span class="fw-medium">24</span> data
-                            </p>
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination pagination-sm mb-0">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Sebelumnya</a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Selanjutnya</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                    
-                    <!-- Other tab panes would go here but are hidden for brevity -->
-                    <div class="tab-pane fade" id="present" role="tabpanel" aria-labelledby="present-tab">
-                        <!-- Content for "Hadir" tab -->
-                    </div>
-                    <div class="tab-pane fade" id="late" role="tabpanel" aria-labelledby="late-tab">
-                        <!-- Content for "Terlambat" tab -->
-                    </div>
-                    <div class="tab-pane fade" id="leave" role="tabpanel" aria-labelledby="leave-tab">
-                        <!-- Content for "Izin/Cuti" tab -->
-                    </div>
-                </div>
+            .btn {
+                width: 100%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .user-menu {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .card-actions {
+                width: 100%;
+            }
+            
+            .search input {
+                width: 100%;
+            }
+            
+            .card-footer {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5 my-5">
+        
+        <div class="page-header">
+            <div class="page-title">
+                <i class="fas fa-users"></i> Riwayat Absensi Karyawan
             </div>
         </div>
         
-        <!-- Summary Cards -->
-        <div class="row g-3">
-            <div class="col-6 col-md-3">
-                <div class="card stat-card h-100">
-                    <div class="card-body">
-                        <h6 class="text-muted small">Total Hari Kerja</h6>
-                        <h3 class="mb-0">22</h3>
+        <div class="stats">
+            <div class="stat-card">
+                <div class="label">Total Hadir</div>
+                <div class="value">177</div>
+                <i class="fas fa-user-check"></i>
+            </div>
+            
+            <div class="stat-card">
+                <div class="label">Total Izin</div>
+                <div class="value">3</div>
+                <i class="fas fa-calendar-minus"></i>
+            </div>
+            
+            <div class="stat-card">
+                <div class="label">Total Cuti</div>
+                <div class="value">0</div>
+                <i class="fas fa-umbrella-beach"></i>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">
+                    <i class="fas fa-list"></i> Daftar Karyawan
+                </div>
+                
+                <div class="card-actions">
+                    <div class="search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Cari karyawan...">
                     </div>
+                    
+                    <button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#exampleModal" type="button">
+                        <i class="fas fa-plus"></i> Tambah Izin
+                    </button>
                 </div>
             </div>
-            <div class="col-6 col-md-3">
-                <div class="card stat-card h-100">
-                    <div class="card-body">
-                        <h6 class="text-muted small">Hadir</h6>
-                        <h3 class="mb-0 text-success">19</h3>
-                    </div>
-                </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Karyawan</th>
+                            <th>Hadir</th>
+                            <th>Izin</th>
+                            <th>Cuti</th>
+                            <th>Status</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Ari Roman</td>
+                            <td>30</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td><span class="badge badge-success">Aktif</span></td>
+                            <td><div class="action-menu"><i class="fas fa-ellipsis-v"></i></div></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Budi Santoso</td>
+                            <td>28</td>
+                            <td>2</td>
+                            <td>0</td>
+                            <td><span class="badge badge-success">Aktif</span></td>
+                            <td><div class="action-menu"><i class="fas fa-ellipsis-v"></i></div></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Ahmad Radin Intan Saputra</td>
+                            <td>30</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td><span class="badge badge-success">Aktif</span></td>
+                            <td><div class="action-menu"><i class="fas fa-ellipsis-v"></i></div></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>Dewi Kusuma</td>
+                            <td>29</td>
+                            <td>1</td>
+                            <td>0</td>
+                            <td><span class="badge badge-success">Aktif</span></td>
+                            <td><div class="action-menu"><i class="fas fa-ellipsis-v"></i></div></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>Ari Fauzi</td>
+                            <td>30</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td><span class="badge badge-success">Aktif</span></td>
+                            <td><div class="action-menu"><i class="fas fa-ellipsis-v"></i></div></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td>Siti Nurhaliza</td>
+                            <td>30</td>
+                            <td>0</td>
+                            <td>0</td>
+                            <td><span class="badge badge-success">Aktif</span></td>
+                            <td><div class="action-menu"><i class="fas fa-ellipsis-v"></i></div></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="col-6 col-md-3">
-                <div class="card stat-card h-100">
-                    <div class="card-body">
-                        <h6 class="text-muted small">Terlambat</h6>
-                        <h3 class="mb-0 text-warning">2</h3>
-                    </div>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="card stat-card h-100">
-                    <div class="card-body">
-                        <h6 class="text-muted small">Izin/Cuti</h6>
-                        <h3 class="mb-0 text-primary">1</h3>
-                    </div>
+            
+            <div class="card-footer">
+                <div>Menampilkan 1-6 dari 6 karyawan</div>
+                <div class="pagination">
+                    <div class="page-link"><i class="fas fa-chevron-left"></i></div>
+                    <div class="page-link active">1</div>
+                    <div class="page-link"><i class="fas fa-chevron-right"></i></div>
                 </div>
             </div>
         </div>
     </div>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl  modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Data Karyawan</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post">
+        <div class="modal-body d-flex justify-content-between gap-5">
+            <div class="container1">
+        <h1>Form Input Izin Karyawan</h1>
+        
+        <form id="leaveForm">
+            <div class="form-group">
+                <label for="employee">Pilih Karyawan:</label>
+                <select id="employee" name="employee" required>
+                    <option value="" disabled selected>-- Pilih Karyawan --</option>
+                    <option value="1">Ahmad Fauzi</option>
+                    <option value="2">Siti Nuraini</option>
+                    <option value="3">Budi Santoso</option>
+                    <option value="4">Dewi Pratiwi</option>
+                    <option value="5">Rudi Hermawan</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="leaveType">Jenis Absensi:</label>
+                <select id="leaveType" name="leaveType" required>
+                    <option value="" disabled selected>-- Pilih Jenis Absensi --</option>
+                    <option value="cuti">Cuti Tahunan</option>
+                    <option value="sakit">Sakit</option>
+                    <option value="izin">Izin</option>
+                    <option value="remote">Work From Home</option>
+                    <option value="dinas">Dinas Luar</option>
+                </select>
+            </div>
+            
+            <div class="date-inputs">
+                <div class="form-group">
+                    <label for="startDate">Tanggal Mulai:</label>
+                    <div class="input-icon">
+                        <input type="date" id="startDate" name="startDate" required>
+                        <i>📅</i>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="endDate">Tanggal Selesai:</label>
+                    <div class="input-icon">
+                        <input type="date" id="endDate" name="endDate" required>
+                        <i>📅</i>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="reason">Keterangan:</label>
+                <textarea id="reason" name="reason" placeholder="Masukkan alasan izin/cuti..." required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label>Dokumen Pendukung (opsional):</label>
+                <div class="file-input">
+                    <input type="file" id="document" name="document" hidden>
+                    <label for="document" class="file-input-button">Pilih File</label>
+                    <span class="file-name" id="fileName">Tidak ada file dipilih</span>
+                </div>
+            </div>
+            
+            <div class="actions">
+                <button type="submit" class="btn btn-primary">Simpan Data</button>
+                <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+        </form>
+    </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Tambah Data</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+    <script>
+        // Search functionality
+        document.querySelector('.search input').addEventListener('keyup', function(e) {
+            const searchText = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const name = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+                if (name.includes(searchText)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+        
+        // Action menu click handler
+        document.querySelectorAll('.action-menu').forEach(menu => {
+            menu.addEventListener('click', function() {
+                alert('Menu aksi: Detail, Edit, atau Hapus');
+            });
+        });
+        
+        // Add leave button click handler
+    
+    </script>
+
+</body>
+</html>
+
