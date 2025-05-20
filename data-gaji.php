@@ -76,9 +76,9 @@
                                 <li><a class="dropdown-item" href="#">Februari 2025</a></li>
                             </ul>
                         </div>
-                        <button class="btn btn-primary">
+                        <a href="?page=10" class="btn btn-primary">
                             <i class="bi bi-plus-lg me-1"></i> Buat Penggajian
-                        </button>
+                        </a>
                     </div>
                 </div>
                 

@@ -2,8 +2,8 @@
 <span class=""><h5><i class="fa-solid fa-user-group"></i> Data Karyawan</h5></span>
     <div class="d-flex justify-content-between">
         <div class="tombol mt-3 d-flex gap-3">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa-solid fa-square-plus"></i> Tambah Data</button>
-            <button type="button"  data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-danger"><i class="fa-solid fa-trash"></i> Hapus Data</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#tambah"><i class="fa-solid fa-square-plus"></i> Tambah Data</button>
+            
         </div>
         <div class="d-flex flex-row">
             <div class="input-group flex-nowrap">
@@ -46,9 +46,8 @@
                   </a>
 
                   <ul class='dropdown-menu'>
-                      <li><a class='dropdown-item' href='#'>Update Data</a></li>
-                      <li><a class='dropdown-item' href='#'>Hapus Data</a></li>
-                      <li><a class='dropdown-item' href='#'>Something else here</a></li>
+                      <li><a href='/logika/update-karyawan.php?id_karyawan=$row[id_karyawan]' class='btn btn-warning btn-sm'>Update</a></li>
+                      <li><a href='/logika/delete-karyawan.php?id_karyawan=$row[id_karyawan]' onclick=\"return confirm('Yakin?')\" class='btn btn-danger btn-sm'>Hapus</a></li>
                   </ul>
               </div>
               </td>";
@@ -72,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 }
 ?>
-<div class="modal fade" id="modalHapusKaryawan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="tambah" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl  modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -140,56 +139,71 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </div>
   </div>
 </div>
-<div class="modal fade" id="modalHapusKaryawan" tabindex="-1" aria-labelledby="modalHapusLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade" id="modalHapusKaryawan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl  modal-dialog-centered">
     <div class="modal-content">
-
-      <!-- Header -->
-      <div class="modal-header border-0">
-        <h5 class="modal-title text-danger fw-bold" id="modalHapusLabel">Hapus Data Karyawan</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Data Karyawan</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-
-      <!-- Body -->
-      <div class="modal-body">
-        <div class="d-flex align-items-center mb-3">
-          <div class="me-3">
-            <img src="https://via.placeholder.com/50" class="rounded-circle" alt="Foto Karyawan">
+      <form method="post">
+        <div class="modal-body d-flex justify-content-between gap-5">
+          <div class="kiri w-100">
+              <div class="mb-3">
+                  <label for="basic-url" class="form-label fw-medium">Username</label>
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="username" name="username" aria-describedby="basic-addon3 basic-addon4">
+                  </div>
+              </div>
+              <div class="mb-3">
+                  <label for="basic-url" class="form-label fw-medium">Password</label>
+                  <div class="input-group">
+                      <input type="password" class="form-control" id="password" name="password" aria-describedby="basic-addon3 basic-addon4">
+                  </div>
+              </div>
+              <div class="mb-3">
+                  <label for="basic-url" class="form-label fw-medium">Nomor Induk Kependudukan</label>
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="nik" name="nik" aria-describedby="basic-addon3 basic-addon4">
+                  </div>
+              </div>
+              <div class="mb-3">
+                  <label for="basic-url" class="form-label fw-medium">Tanggal Lahir</label>
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="tanggal_lahir" name="tanggal_lahir" aria-describedby="basic-addon3 basic-addon4">
+                  </div>
+              </div>
           </div>
-          <div>
-            <h6 class="mb-0 fw-bold">Ahmad Radin Intan Saputra</h6>
-            <small class="text-muted">Karyawan Toko Roti Bakar Bahagia</small>
+          <div class="kanan  w-100">
+              <div class="mb-3">
+                    <label for="basic-url" class="form-label fw-medium">Nama karyawan</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="nama_lengkap" name="nama_lengkap" aria-describedby="basic-addon3 basic-addon4">
+                    </div>
+              </div>
+              <div class="mb-3">
+                  <label for="basic-url" class="form-label fw-medium">Jenis Kelamin</label>
+                  <div class="input-group">
+                    <select class="form-select"  id="jenis_kelamin" name="jenis_kelamin">
+                      <option value="" selected>Pilih Jenis Kelamin</option>
+                      <option value="Laki - Laki">Laki - Laki</option>
+                      <option value="Perempuan">Perempuan</option>
+                    </select>
+                  </div>
+              </div>
+              <div class="mb-3">
+                  <label for="basic-url" class="form-label fw-medium">No Telepon</label>
+                  <div class="input-group">
+                      <input type="text" class="form-control" id="no_telp" name="no_telp" aria-describedby="basic-addon3 basic-addon4">
+                  </div>
+              </div>
           </div>
         </div>
-
-        <div class="row mb-2">
-          <div class="col-6"><strong>NIK:</strong> 01010101010</div>
-          <div class="col-6"><strong>Tanggal Lahir:</strong> 010101</div>
-          <div class="col-6"><strong>Jenis Kelamin:</strong> Laki - Laki</div>
-          <div class="col-6"><strong>No Telp:</strong> 0808080808</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="submit" class="btn btn-primary">Tambah Data</button>
         </div>
-
-        <div class="alert alert-danger mt-3">
-          <strong>Peringatan:</strong> Tindakan ini tidak dapat dibatalkan. Semua data yang terkait dengan karyawan ini akan dihapus secara permanen dari sistem.
-        </div>
-
-        <div class="mb-3">
-          <label for="alasanPenghapusan" class="form-label">Alasan penghapusan:</label>
-          <select class="form-select" id="alasanPenghapusan">
-            <option value="">Pilih alasan</option>
-            <option value="Mengundurkan diri">Mengundurkan diri</option>
-            <option value="Dikeluarkan">Dikeluarkan</option>
-            <option value="Lainnya">Lainnya</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div class="modal-footer border-0">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-        <button type="button" class="btn btn-danger" onclick="hapusData()">Hapus Data</button>
-      </div>
-
+      </form>
     </div>
   </div>
 </div>

@@ -65,6 +65,10 @@ switch ($page) {
         include 'tampilan-login.php';
         break;
 
+    case '10':
+        include 'perhitungan-gaji.php';
+        break;
+
     case 'logout':
         include 'logout.php';
         break;
