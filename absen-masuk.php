@@ -1,9 +1,8 @@
 <?php
 session_start();
-// Contoh ambil nama karyawan dari session atau query
-$nama_karyawan = "Ahmad Radin Intan Saputra"; // Ganti dengan session/database kalau ada
-$karyawan_id = 1; // Ganti sesuai login
-?>
+
+$nama_karyawan = "Ahmad Radin Intan Saputra"; 
+$karyawan_id = 1; 
 
 <div class="absen-page">
   <div class="absen-container">
