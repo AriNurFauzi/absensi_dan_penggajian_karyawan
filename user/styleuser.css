@@ -1,4 +1,125 @@
 .primary{
     background-color: #C9B194;
 }
+.primary{
+    background-color: #C9B194;
+}
 
+.beranda{
+    background-color: #C9B194;
+}
+
+.logo img{
+    aspect-ratio: 4 / 3 ;
+    width: 20vmax;
+    object-fit: contain;
+}
+.absen {
+    margin: 0;
+    padding: 0;
+    background-color: #ccb297;
+    font-family: 'Quicksand', sans-serif;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .logo1 {
+    width: 120px;
+    margin-bottom: 20px;
+  }
+  
+  .instruction {
+    color: #fff;
+    font-weight: 600;
+    margin-bottom: 40px;
+  }
+  
+  .button-group1 {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+  }
+  
+  .button1 {
+    background-color: white;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+    width: 140px;
+    transition: transform 0.2s ease;
+  }
+  
+  .button1:hover {
+    transform: scale(1.05);
+  }
+  
+  .button1 img {
+    width: 40px;
+    margin-bottom: 10px;
+  }
+  
+  .masuk {
+    color: #00b894;
+    font-weight: 600;
+  }
+  
+  .pulang {
+    color: #d63031;
+    font-weight: 600;
+  }
+  .absen-page {
+    background-color: #ccb297;
+    font-family: 'Quicksand', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .absen-container {
+    text-align: center;
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  }
+  
+  .judul {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .nama {
+    margin: 10px 0;
+    font-weight: 600;
+  }
+  
+  .video-frame {
+    width: 250px;
+    height: 330px;
+    border-radius: 20px;
+    object-fit: cover;
+    margin-bottom: 15px;
+    background: #000;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .btn-green {
+    background-color: #00e676;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: black;
+  }
