@@ -1,3 +1,11 @@
+<?php
+$query = "SELECT * FROM gaji";
+$result = mysqli_query($conn, $query);
+
+if (!$result) {
+    die("Query error: " . mysqli_error($conn));
+}
+?>
 <div class="container mt-5 pt-5">
         <div class="row g-0">
             <!-- Sidebar -->
@@ -76,19 +84,37 @@
                                 <li><a class="dropdown-item" href="#">Februari 2025</a></li>
                             </ul>
                         </div>
-                        <a href="?page=10" class="btn btn-primary">
+                        <a href="?page=6" class="btn btn-primary">
                             <i class="bi bi-plus-lg me-1"></i> Buat Penggajian
                         </a>
                     </div>
                 </div>
-                
+                <?php
+
+                // Total Gaji
+                $resultGaji = mysqli_query($conn, "SELECT SUM(total) AS total_gaji FROM gaji");
+                $totalGaji = mysqli_fetch_assoc($resultGaji)['total_gaji'] ?? 0;
+
+                // Total Karyawan
+                $resultKaryawan = mysqli_query($conn, "SELECT COUNT(*) AS total_karyawan FROM pengguna WHERE SBG = 'karyawan'");
+                $totalKaryawan = mysqli_fetch_assoc($resultKaryawan)['total_karyawan'] ?? 0;
+
+                // Rata-rata Gaji
+                $rataRataGaji = $totalKaryawan > 0 ? ($totalGaji / $totalKaryawan) : 0;
+
+                // Format ke Rupiah
+                function formatRupiah($angka) {
+                    return "Rp " . number_format($angka, 0, ',', '.');
+                }
+                ?>
+
                 <!-- Stats Cards -->
-                <div class="row g-3 mb-4">
+                <div class="row g-3 mb-4 justify-content-center text-center" >
                     <div class="col-md-3 col-sm-6">
                         <div class="card stat-card h-100">
                             <div class="card-body">
                                 <span class="d-block text-muted mb-1">Total Penggajian</span>
-                                <h3 class="card-title mb-3">Rp 27.200.000</h3>
+                                <h3 class="card-title mb-3"><?= formatRupiah($totalGaji) ?></h3>
                                 <p class="card-text text-success mb-0">
                                     <i class="bi bi-graph-up me-1"></i>
                                     <span>2.5% dari bulan lalu</span>
@@ -101,7 +127,7 @@
                         <div class="card stat-card h-100">
                             <div class="card-body">
                                 <span class="d-block text-muted mb-1">Total Karyawan</span>
-                                <h3 class="card-title mb-3">8</h3>
+                                <h3 class="card-title mb-3"><?= $totalKaryawan ?></h3>
                                 <p class="card-text text-primary mb-0">
                                     <i class="bi bi-people me-1"></i>
                                 </p>
@@ -113,24 +139,11 @@
                         <div class="card stat-card h-100">
                             <div class="card-body">
                                 <span class="d-block text-muted mb-1">Gaji Rata-rata</span>
-                                <h3 class="card-title mb-3">Rp 3.000.000</h3>
+                                <h3 class="card-title mb-3"><?= formatRupiah($rataRataGaji) ?></h3>
                                 <p class="card-text text-success mb-0">
                                     <i class="bi bi-graph-up me-1"></i>
                                 </p>
                                 <i class="bi bi-clipboard-data icon"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <div class="card stat-card h-100">
-                            <div class="card-body">
-                                <span class="d-block text-muted mb-1">Status Penggajian</span>
-                                <h3 class="card-title mb-3">5/8</h3>
-                                <p class="card-text mb-0">
-                                    <span class="badge bg-success rounded-pill">5 Dibayar</span>
-                                    <span class="badge bg-warning rounded-pill">3 Tertunda</span>
-                                </p>
-                                <i class="bi bi-check-circle icon"></i>
                             </div>
                         </div>
                     </div>
@@ -166,36 +179,37 @@
                                 <thead class="table-light">
                                     <tr>
                                         <th class="ps-4">Karyawan</th>
-                                        <th>user name</th>
                                         <th>Hari kerja</th>
                                         <th>Gaji</th>
                                         <th>Bonus</th>
                                         <th>Total</th>
-                                        <th>Status</th>
                                         <th class="text-end pe-4">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="ps-4">
-                                            <div class="d-flex align-items-center">
-                                                <div>
-                                                    <h6 class="mb-0">Budi Santoso</h6>
+                                    <?php while ($row = mysqli_fetch_assoc($result)) : ?>
+                                        <tr>
+                                            <td class="ps-4"><div class="d-flex align-items-center"><div><h6 class="mb-0"><?= htmlspecialchars($row['nama_karyawan']) ?></h6></div></div></td>
+                                            <td><?= htmlspecialchars($row['jumlah_hari_masuk']) ?></td>
+                                            <td><?= number_format($row['gaji_pokok'], 0, ',', '.') ?></td>
+                                            <td><?= number_format($row['Bonus'], 0, ',', '.') ?></td>
+                                            <td><strong>Rp <?= number_format($row['total'] === null ? 0 : $row['total'], 0, ',', '.') ?></strong></td>
+                                            <td class="text-end pe-4">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                        <i class="bi bi-three-dots"></i>
+                                                    </button>
+                                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                                                        <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>Lihat Detail</a></li>
+                                                        <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-pdf me-2"></i>Unduh Slip Gaji</a></li>
+                                                        <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
+                                                    </ul>
                                                 </div>
-                                            </div>
-                                        </td>
-                                        <td>E001</td>
-                                        <td>30</td>
-                                        <td>3.000.000</td>
-                                        <td>4.00.000</td>
-                                        <td><strong>Rp 3.400.000</strong></td>
-                                        <td>sudah dibayar</td>
-                                        <td>
-                                            <span class="badge badge-status badge-paid">
-                                                <i class="bi bi-check-circle-fill me-1"></i> Dibayar
-                                            </span>
-                                        </td>
-                                        <td class="text-end pe-4">
+                                            </td>
+                                        </tr>
+                                    <?php endwhile; ?>
+                                </tbody>
+                                <td class="text-end pe-4">
                                             <div class="dropdown">
                                                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                                     <i class="bi bi-three-dots"></i>
@@ -207,105 +221,6 @@
                                                 </ul>
                                             </div>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ps-4">
-                                            <div class="d-flex align-items-center">
-                                                <div>
-                                                    <h6 class="mb-0">Dewi Kusuma</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                            <td>E002</td>
-                                            <td>30</td>
-                                            <td>3.000.000</td>
-                                            <td>4.00.000</td>
-                                            <td><strong>Rp 3.400.000</strong></td>
-                                            <td>sudah dibayar</td>
-                                        <td>
-                                            <span class="badge badge-status badge-paid">
-                                                <i class="bi bi-check-circle-fill me-1"></i> Dibayar
-                                            </span>
-                                        </td>
-                                        <td class="text-end pe-4">
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="bi bi-three-dots"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton2">
-                                                    <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>Lihat Detail</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-pdf me-2"></i>Unduh Slip Gaji</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ps-4">
-                                            <div class="d-flex align-items-center">
-                                                <div>
-                                                    <h6 class="mb-0">Ahmad Fauzi</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>E003</td>
-                                        <td>30</td>
-                                        <td>3.000.000</td>
-                                        <td>4.00.000</td>
-                                        <td><strong>Rp 3.400.000</strong></td>
-                                        <td>sudah dibayar</td>
-                                        <td>
-                                            <span class="badge badge-status badge-pending">
-                                                <i class="bi bi-hourglass-split me-1"></i> Tertunda
-                                            </span>
-                                        </td>
-                                        <td class="text-end pe-4">
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="bi bi-three-dots"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton3">
-                                                    <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>Lihat Detail</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-pdf me-2"></i>Unduh Slip Gaji</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="ps-4">
-                                            <div class="d-flex align-items-center">
-                                                <div>
-                                                    <h6 class="mb-0">Siti Nurhaliza</h6>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>E004</td>
-                                        <td>30</td>
-                                        <td>3.000.000</td>
-                                        <td>4.00.000</td>
-                                        <td><strong>Rp 3.400.000</strong></td>
-                                        <td>sudah dibayar</td>
-                                        <td>
-                                            <span class="badge badge-status badge-processing">
-                                                <i class="bi bi-arrow-repeat me-1"></i> Diproses
-                                            </span>
-                                        </td>
-                                        <td class="text-end pe-4">
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="bi bi-three-dots"></i>
-                                                </button>
-                                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton4">
-                                                    <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>Lihat Detail</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="bi bi-file-earmark-pdf me-2"></i>Unduh Slip Gaji</a></li>
-                                                    <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Edit</a></li>
-                                                </ul>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    
-                                </tbody>
                             </table>
                         </div>
                     </div>

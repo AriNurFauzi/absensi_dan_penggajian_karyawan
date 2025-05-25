@@ -525,22 +525,27 @@
         </div>
         
         <div class="stats">
+            <?php
+            // Total Hadir
+            $resultHadir = mysqli_query($conn, "SELECT COUNT(*) AS total_hadir FROM absensi");
+            $hadir = mysqli_fetch_assoc($resultHadir)['total_hadir'];
+
+            ?>
             <div class="stat-card">
                 <div class="label">Total Hadir</div>
-                <div class="value">177</div>
+                <div class="value"><?= $hadir ?></div>
                 <i class="fas fa-user-check"></i>
             </div>
             
+            <?php
+            // Total Izin
+            $resultIzin = mysqli_query($conn, "SELECT COUNT(*) AS total_izin FROM izin");
+            $izin = mysqli_fetch_assoc($resultIzin)['total_izin'];
+            ?>
             <div class="stat-card">
                 <div class="label">Total Izin</div>
-                <div class="value">3</div>
+                <div class="value"><?= $izin ?></div>
                 <i class="fas fa-calendar-minus"></i>
-            </div>
-            
-            <div class="stat-card">
-                <div class="label">Total Cuti</div>
-                <div class="value">0</div>
-                <i class="fas fa-umbrella-beach"></i>
             </div>
         </div>
         
@@ -570,66 +575,41 @@
                             <th>Nama Karyawan</th>
                             <th>Hadir</th>
                             <th>Izin</th>
-                            <th>Cuti</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <?php
+                        $no = 1;
+                        $data = mysqli_query($conn, "SELECT 
+                            k.id_karyawan,
+                            k.nama_lengkap,
+                            COUNT(a.id_karyawan) AS hadir,
+                            COUNT(i.id_karyawan) AS izin
+                        FROM 
+                            pengguna k
+                        LEFT JOIN absensi a ON k.id_karyawan = a.id_karyawan
+                        LEFT JOIN izin i ON k.id_karyawan = i.id_karyawan
+                        GROUP BY k.id_karyawan");
+
+                        $karyawanList = [];
+                        while ($row = mysqli_fetch_array($data)) {
+                            $karyawanList[] = $row;
+                        }
+                        ?>
+                        <?php $no = 1; foreach ($karyawanList as $d): ?>
                         <tr>
-                            <td>1</td>
-                            <td>Ari Roman</td>
-                            <td>30</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td><span class="badge badge-success">Aktif</span></td>
-                            <td><div class="action-menu"><i class="fas fa-ellipsis-v"></i></div></td>
+                            <td><?= $no++ ?></td>
+                            <td><?= $d['nama_lengkap'] ?></td>
+                            <td><?= $d['hadir'] ?></td>
+                            <td><?= $d['izin'] ?></td>
+                            <td>
+                                <button class="btn btn-sm btn-light">⋮</button>
+                            </td>
                         </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Budi Santoso</td>
-                            <td>28</td>
-                            <td>2</td>
-                            <td>0</td>
-                            <td><span class="badge badge-success">Aktif</span></td>
-                            <td><div class="action-menu"><i class="fas fa-ellipsis-v"></i></div></td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Ahmad Radin Intan Saputra</td>
-                            <td>30</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td><span class="badge badge-success">Aktif</span></td>
-                            <td><div class="action-menu"><i class="fas fa-ellipsis-v"></i></div></td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>Dewi Kusuma</td>
-                            <td>29</td>
-                            <td>1</td>
-                            <td>0</td>
-                            <td><span class="badge badge-success">Aktif</span></td>
-                            <td><div class="action-menu"><i class="fas fa-ellipsis-v"></i></div></td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>Ari Fauzi</td>
-                            <td>30</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td><span class="badge badge-success">Aktif</span></td>
-                            <td><div class="action-menu"><i class="fas fa-ellipsis-v"></i></div></td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>Siti Nurhaliza</td>
-                            <td>30</td>
-                            <td>0</td>
-                            <td>0</td>
-                            <td><span class="badge badge-success">Aktif</span></td>
-                            <td><div class="action-menu"><i class="fas fa-ellipsis-v"></i></div></td>
-                        </tr>
+                        <?php endforeach; ?>
+
                     </tbody>
                 </table>
             </div>
@@ -644,34 +624,32 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl  modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Data Karyawan</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <form method="post">
         <div class="modal-body d-flex justify-content-between gap-5">
             <div class="container1">
         <h1>Form Input Izin Karyawan</h1>
         
-        <form id="leaveForm">
+        <form action="proses-izin.php" method="post" id="leaveForm">
             <div class="form-group">
+                <input type="hidden" id="id_karyawan" name="id_karyawan">
                 <label for="employee">Pilih Karyawan:</label>
                 <select id="employee" name="employee" required>
                     <option value="" disabled selected>-- Pilih Karyawan --</option>
-                    <option value="1">Ahmad Fauzi</option>
-                    <option value="2">Siti Nuraini</option>
-                    <option value="3">Budi Santoso</option>
-                    <option value="4">Dewi Pratiwi</option>
-                    <option value="5">Rudi Hermawan</option>
+                    <?php foreach ($karyawanList as $d): ?>
+                        <option value="<?= $d['id_karyawan'] ?>"><?= $d['nama_lengkap'] ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
             
             <div class="form-group">
                 <label for="leaveType">Jenis Absensi:</label>
-                <select id="leaveType" name="leaveType" required>
+                <select id="leaveType" name="ket_izin" required>
                     <option value="" disabled selected>-- Pilih Jenis Absensi --</option>
                     <option value="cuti">Cuti Tahunan</option>
                     <option value="sakit">Sakit</option>
@@ -683,17 +661,9 @@
             
             <div class="date-inputs">
                 <div class="form-group">
-                    <label for="startDate">Tanggal Mulai:</label>
+                    <label for="startDate">Tanggal Izin:</label>
                     <div class="input-icon">
-                        <input type="date" id="startDate" name="startDate" required>
-                        <i>📅</i>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="endDate">Tanggal Selesai:</label>
-                    <div class="input-icon">
-                        <input type="date" id="endDate" name="endDate" required>
+                        <input type="date" id="startDate" name="tanggal_izin" required>
                         <i>📅</i>
                     </div>
                 </div>
@@ -701,7 +671,7 @@
             
             <div class="form-group">
                 <label for="reason">Keterangan:</label>
-                <textarea id="reason" name="reason" placeholder="Masukkan alasan izin/cuti..." required></textarea>
+                <textarea id="reason" name="keterangan" placeholder="Masukkan alasan izin/cuti..." required></textarea>
             </div>
             
             <div class="form-group">
@@ -721,10 +691,7 @@
     </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-primary">Tambah Data</button>
         </div>
-      </form>
     </div>
   </div>
 </div>

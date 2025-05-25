@@ -12,7 +12,7 @@
       <div class="offcanvas-body">
         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
           <li class="nav-item">
-            <a class="btn btn-dark primary w-100 border-0" aria-current="page" href="?page=9">Login</a>
+            <a class="btn btn-dark primary w-100 border-0" aria-current="page" href="tampilan-login.php">Login</a>
           </li>
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="?page=1">Beranda</a>

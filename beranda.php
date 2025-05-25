@@ -12,8 +12,5 @@
         <div class="Data">
             <a class="text-decoration-none btn btn-light p-3 rounded-5" href="?page=4"><h5><i class="fa-solid fa-user-group"></i> Data Karyawan</h5></a>
         </div>
-        <div class="Data">
-            <a class="text-decoration-none btn btn-light p-3 rounded-5" href="?page=5"><h5><i class="fa-solid fa-user-group"></i> Absensi Karyawan</h5></a>
-        </div>
     </div>
 </div>

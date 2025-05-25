@@ -1,3 +1,10 @@
+<?php
+$query_pengguna = "SELECT id_karyawan, nama_lengkap FROM pengguna";
+$result_pengguna = mysqli_query($conn, $query_pengguna);
+if (!$result_pengguna) {
+    die("Query error: " . mysqli_error($conn));
+}
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -18,23 +25,40 @@
           <button class="btn btn-light btn-sm">🖨️</button>
         </div>
       </div>
+    <form action="proses-penggajian.php" method="post">
       <div class="card-body">
         <div class="mb-3">
           <label for="namaKaryawan" class="form-label">Nama Karyawan</label>
-          <input type="text" class="form-control" id="namaKaryawan" placeholder="Masukkan nama karyawan">
-        </div>
+          <select name="nama" class="form-select" id="namaKaryawan">
+              <option value="">-- Pilih Karyawan --</option>
+              <?php while ($row = mysqli_fetch_assoc($result_pengguna)) : ?>
+                  <option value="<?= htmlspecialchars($row['nama_lengkap']) ?>"><?= htmlspecialchars($row['nama_lengkap']) ?></option>
+              <?php endwhile; ?>
+          </select>
+      </div>
 
         <div class="row g-3 mb-3">
           <div class="col">
             <label for="bulan" class="form-label">Bulan</label>
-            <select class="form-select" id="bulan">
+            <select name="bulan" class="form-select" id="bulan">
+              <option selected>Januari</option>
+              <option selected>Februari</option>
+              <option selected>Maret</option>
+              <option selected>April</option>
               <option selected>Mei</option>
-              <!-- Tambahkan bulan lainnya -->
+              <option selected>Juni</option>
+              <option selected>Juli</option>
+              <option selected>Agustus</option>
+              <option selected>September</option>
+              <option selected>Oktober</option>
+              <option selected>November</option>
+              <option selected>Desember</option>
+
             </select>
           </div>
           <div class="col">
             <label for="tahun" class="form-label">Tahun</label>
-            <select class="form-select" id="tahun">
+            <select name="tahun" class="form-select" id="tahun">
               <option selected>2025</option>
             </select>
           </div>
@@ -43,18 +67,18 @@
         <div class="row g-3 mb-3">
           <div class="col">
             <label for="hariMasuk" class="form-label">Jumlah Hari Masuk</label>
-            <input type="number" class="form-control" id="hariMasuk" value="0" min="0" max="31">
+            <input name="harimasuk"type="number" class="form-control" id="hariMasuk" value="0" min="0" max="31">
             <div class="form-text">Maksimal 31 hari</div>
           </div>
           <div class="col">
             <label for="hariLibur" class="form-label">Jumlah Hari Libur</label>
-            <input type="number" class="form-control" id="hariLibur" value="0" min="0">
+            <input name="harilibur"type="number" class="form-control" id="hariLibur" value="0" min="0">
           </div>
         </div>
 
         <div class="mb-3">
           <label for="bonus" class="form-label">Bonus (Rp)</label>
-          <input type="number" class="form-control" id="bonus" value="0" min="0">
+          <input name="bonus" type="number" class="form-control" id="bonus" value="0" min="0">
         </div>
 
         <div class="bg-light p-3 border rounded">
@@ -64,12 +88,17 @@
           <p>Total Gaji Pokok: <span id="totalGajiPokok">Rp 0</span></p>
           <p>Bonus: <span id="tampilBonus">Rp 0</span></p>
           <p class="fw-bold">Total Gaji: <span id="totalGaji">Rp 0</span></p>
+           <input name="totalGaji" type="hidden" class="form-control" id="bonus" value="0" min="0">
         </div>
       </div>
       <div class="card-footer bg-warning-subtle text-center fw-bold fs-5">
         Total Gaji Diterima: <span id="gajiDiterima">Rp 0</span>
       </div>
-      <button class="btn btn-primary mt-3" onclick="bukaSlip()">Lihat Slip Gaji</button>
+        <div class="text-center my-3">
+          <button type="submit" class="btn btn-primary w-100" onclick="bukaSlip()">Buat Slip Gaji</button>
+        </div>
+
+    </form>
     </div>
   </div>
 
@@ -129,8 +158,7 @@
       total: totalGaji
     });
 
-    // Buka halaman slip dengan parameter
-    window.open(`/logika/slip-gaji.php?${params.toString()}`, '_blank');
+  
   }
 </script>
 
